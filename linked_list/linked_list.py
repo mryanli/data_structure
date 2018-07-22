@@ -59,35 +59,57 @@ class Linked_list():
 
 
     def append(self,data):#在尾部添加数据
-        tail = self._head
-        node = Node(data)
-        while tail.next != None:
-            tail = tail.next
-        tail.next = node
+        if self.length()==0:
+            self.add(data)
+        else:
+            tail = self._head
+            node = Node(data)
+            while tail.next != None:
+                tail = tail.next
+            tail.next = node
 
 
 
     def insert(self,pos,data):#在链表中pos位置增加数据
-        curpos = 0
-        cur = self._head
-        node = Node(data)
-        if pos >= self.length():
-            return self.append(node)
+        if pos > self.length():
+            return self.append(data)
+        elif pos <= 0:
+            return self.add(data)
         else:
-            while curpos <= pos:
-                cur = cur.next
-                curpos +=1
-            node.next = cur.next
-            cur.next = node
+            if self.length() <= 1:
+                self.add(data)
+            else:
+                curpos = 0
+                cur = self._head
+                node = Node(data)
+                while curpos < pos:
+                    pre = cur
+                    cur = cur.next
+                    curpos +=1
+                node.next = cur
+                pre.next = node
 
 
 
-    def remove(self,data): #删除数据
-        cur = self._head
-        while cur != None:
-            if cur.next and cur.next.data == data:
-                cur.next = cur.next.next
-            cur = cur.next
+    def remove(self,data): #删除数据,(会删除所有的等于data的数据）
+        if self.length() ==0:
+            return self._head
+        else:
+            self.add('flag')
+            cur = self._head.next
+            pre = self._head
+            while cur != None:
+                if cur.data == data:
+                    pre.next = cur.next
+                    cur = cur.next
+                else:
+                    pre = cur
+                    cur = cur.next
+            self._head = self._head.next
+
+
+
+
 
 
     def search(self,data):#查找数据
@@ -103,14 +125,16 @@ class Linked_list():
 
 if __name__ == '__main__':
     link = Linked_list()
-    link.add(1)
-    link.add(2)
+    link.append(5)
+    link.append(2)
     link.append(3)
-    link.append(8)
+    link.append(5)
+    link.append(4)
+    link.append(1)
 
-    link.insert(1,5)
-    link.insert(1,5)
-    link.insert(1,5)
-    print(link.is_empty())
+
+    link.remove(5)
+
+
     print(link.length())
     link.travel()
